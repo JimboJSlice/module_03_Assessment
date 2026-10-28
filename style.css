@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #383a3c;
+    padding: 40px;
+    color: #ffffff;
+    margin: auto;
+}
+
+nav ul {
+   list-style: none;
+   text-align: center;
+}
+
+nav ul li {
+   display: inline-block;
+}
+
+.app {
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+input {
+    padding: 10px;
+    width: 70%;
+    border: 1px solid #cbd2d9;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 16px;
+    margin-left: 8px;
+    border: none;
+    border-radius: 6px;
+    background: #41a7db;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #265e7a;
+}
