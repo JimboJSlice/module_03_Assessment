@@ -50,3 +50,18 @@ button {
 button:hover {
     background: #0e6b07;
 }
+
+#status {
+  margin-top: 16px;
+  font-weight: bold;
+}
+
+.result {
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 6px;
+}
+
+.result img {
+    max-width: 40%;
+}
