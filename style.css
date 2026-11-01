@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: #383a3c;
+    background: #272c27;
     padding: 40px;
     color: #ffffff;
     margin: auto;
@@ -52,16 +52,22 @@ button:hover {
 }
 
 #status {
-  margin-top: 16px;
-  font-weight: bold;
+    margin-top: 16px;
+    font-weight: bold;
 }
 
-.result {
-  padding: 15px;
-  margin-top: 15px;
-  border-radius: 6px;
+#result {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+    padding: 15px;
+    border-radius: 8px;
 }
+
 
 .result img {
-    max-width: 40%;
+    max-width: 80%;
+    height: auto;
+    border-radius: 6px;
 }

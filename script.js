@@ -11,35 +11,41 @@ const result = document.getElementById("result");
 const statusMessage = document.getElementById("statusText");
 
 function renderMovieProperties(movieData) {
-    //result.innerHTML = ''; Removed as stopping multiple results
-    
     const div = document.createElement('div');
     div.classList.add('result');
-    const title = document.createElement('h2');
-    title.innerText = movieData.title;
     const img = document.createElement('img');
     img.src = IMAGE_URL + movieData.poster_path;
+    const title = document.createElement('h2');
+    title.innerText = movieData.title;
     const description = document.createElement('p');
     description.innerText = movieData.overview;
     const date = document.createElement('h3');
     date.innerText = movieData.release_date;
-    div.append(title, img, description, date);
+    const rating = document.createElement('p');
+    rating.innerText = 'Rating: ' + movieData.vote_average + '/10';
+    div.append(img, title, description, date, rating);
     result.append(div);
 }
 
 searchForm.addEventListener("submit", async function (event) {
   event.preventDefault();
+  const movieName = input.value.trim();
+  try {
+    const response = await fetch(API_URL + encodeURIComponent(movieName), OPTIONS);
+    const body = await response.json();
+    result.innerHTML = ''; 
+       if (body.results.length > 0) {
+            body.results.forEach(movie => {
+                renderMovieProperties(movie);
+            });
+            statusMessage.innerText =
+                `Found ${body.total_results} movies`;
+        } else {
+            statusMessage.innerText = 'No movies found';
+        }
+      } catch (error) {
 
-  console.log("Search triggered");
-
-const movieName = input.value.trim();
-
-const response = await fetch(API_URL + encodeURIComponent(movieName), OPTIONS);
-const body = await response.json();
-
-body.results.forEach(movie => {
-    renderMovieProperties(movie);
-});
-
-console.log(movie);
+        console.error(error);
+        statusMessage.innerText = error.message;
+    }
 });
