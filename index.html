@@ -1,32 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cine.ie</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
     <nav>
-        <ul>
-            <li>Trending</li>
-            <li>Cinemas</li>
-            <li>About</li>
-        </ul>
+      <ul>
+        <li>Trending</li>
+        <li>Cinemas</li>
+        <li>About</li>
+      </ul>
     </nav>
 
-<div class="app">
-    <h1>Find Movies In The Cinema In Ireland</h1>
-    <form id="searchForm">
-    <input type="search" id="searchInput" placeholder="What do you want to watch">
-    <button type="submit">Search</button>
-    </form>
-    <p id="statusText"></p>
+    <main class="app">
+      <header class="hero">
+        <h1>Find Movies In The Cinema In Ireland</h1>
 
-    <div id="result"></div>
-</div>
+        <form id="searchForm">
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="What do you want to watch?"
+          />
+          <button type="submit">Search</button>
+        </form>
+      </header>
 
-<script src="script.js"></script>
-</body>
+      <section class="movies-section">
+        <div class="section-header">
+          <h2 id="sectionTitle">Now Playing in Ireland</h2>
+          <p id="statusText"></p>
+        </div>
+
+        <div id="result" class="movie-list"></div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
 </html>
