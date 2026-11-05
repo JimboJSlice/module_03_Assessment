@@ -12,17 +12,29 @@ const result = document.getElementById("result");
 const statusText = document.getElementById("statusText");
 const sectionTitle = document.getElementById("sectionTitle");
 const genreSelect = document.getElementById("genreSelect");
+const watchlistLink = document.getElementById("watchlistLink");
+const watchlistCount = document.getElementById("watchlistCount");
 
-// Store the original Now Playing movies
+// Store movies and current page view
 let nowPlayingMovies = [];
+let currentMovies = [];
+let currentView = "movies";
 
 // Get movies currently playing in Ireland
 function getNowPlaying() {
+  currentView = "movies";
+
   statusText.innerText = "Loading movies...";
   sectionTitle.innerText = "Now Playing in Ireland";
 
   fetch(`${API_URL}/movie/now_playing?region=IE&language=en-IE`, OPTIONS)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Could not load movies.");
+      }
+
+      return response.json();
+    })
 
     .then((data) => {
       nowPlayingMovies = data.results;
@@ -41,7 +53,13 @@ function getNowPlaying() {
 // Get movie genres from TMDB
 function getGenres() {
   fetch(`${API_URL}/genre/movie/list?language=en-IE`, OPTIONS)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Could not load genres.");
+      }
+
+      return response.json();
+    })
 
     .then((data) => {
       data.genres.forEach((genre) => {
@@ -61,6 +79,8 @@ function getGenres() {
 
 // Filter Now Playing movies by genre
 function filterMoviesByGenre(genreId) {
+  currentView = "movies";
+
   if (genreId === "") {
     displayMovies(nowPlayingMovies);
 
@@ -80,6 +100,8 @@ function filterMoviesByGenre(genreId) {
 
 // Search for movies
 function searchMovies(movieName) {
+  currentView = "movies";
+
   // Reset genre selection
   genreSelect.value = "";
 
@@ -90,7 +112,13 @@ function searchMovies(movieName) {
     `${API_URL}/search/movie?query=${encodeURIComponent(movieName)}&region=IE&language=en-IE`,
     OPTIONS,
   )
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Could not search for movies.");
+      }
+
+      return response.json();
+    })
 
     .then((data) => {
       displayMovies(data.results);
@@ -104,8 +132,68 @@ function searchMovies(movieName) {
     });
 }
 
+// Get saved watchlist from localStorage
+function getWatchlist() {
+  return JSON.parse(localStorage.getItem("watchlist")) || [];
+}
+
+// Save watchlist to localStorage
+function saveWatchlist(watchlist) {
+  localStorage.setItem("watchlist", JSON.stringify(watchlist));
+
+  updateWatchlistCount();
+}
+
+// Update watchlist number in navigation
+function updateWatchlistCount() {
+  const watchlist = getWatchlist();
+
+  watchlistCount.innerText = watchlist.length;
+}
+
+// Add or remove a movie from the watchlist
+function toggleWatchlist(movie) {
+  let watchlist = getWatchlist();
+
+  const movieExists = watchlist.some(
+    (savedMovie) => savedMovie.id === movie.id,
+  );
+
+  if (movieExists) {
+    watchlist = watchlist.filter((savedMovie) => savedMovie.id !== movie.id);
+  } else {
+    watchlist.push(movie);
+  }
+
+  saveWatchlist(watchlist);
+
+  // Refresh the current movie list or watchlist
+  if (currentView === "watchlist") {
+    displayMovies(getWatchlist());
+
+    statusText.innerText = `${getWatchlist().length} saved movies`;
+  } else {
+    displayMovies(currentMovies);
+  }
+}
+
+// Open watchlist
+function showWatchlist() {
+  currentView = "watchlist";
+
+  sectionTitle.innerText = "My Watchlist";
+
+  const watchlist = getWatchlist();
+
+  displayMovies(watchlist);
+
+  statusText.innerText = `${watchlist.length} saved movies`;
+}
+
 // Display movies on the page
 function displayMovies(movies) {
+  currentMovies = movies;
+
   result.innerHTML = "";
 
   if (!movies || movies.length === 0) {
@@ -123,7 +211,7 @@ function displayMovies(movies) {
         poster.src = IMAGE_URL + movie.poster_path;
       }
 
-      poster.alt = movie.title;
+      poster.alt = `${movie.title} poster`;
       poster.loading = "lazy";
 
       // Movie information
@@ -136,18 +224,47 @@ function displayMovies(movies) {
 
       // Release date
       const releaseDate = document.createElement("p");
+      releaseDate.classList.add('movie-date');
       releaseDate.innerText = `Release date: ${movie.release_date || "Unknown"}`;
 
       // Movie rating
       const rating = document.createElement("p");
+      rating.classList.add('movie-rating');
       rating.innerText = `Rating: ${Number(movie.vote_average || 0).toFixed(1)}/10`;
 
       // Movie description
       const description = document.createElement("p");
+      description.classList.add('movie-description');
       description.innerText = movie.overview || "No description available.";
 
-      // Add information to the movie
-      movieInfo.append(title, releaseDate, rating, description);
+      // Watchlist button
+      const watchlistButton = document.createElement("button");
+      watchlistButton.classList.add("watchlist-button");
+
+      const watchlist = getWatchlist();
+
+      const movieSaved = watchlist.some(
+        (savedMovie) => savedMovie.id === movie.id,
+      );
+
+      if (movieSaved) {
+        watchlistButton.innerText = "Remove from Watchlist";
+      } else {
+        watchlistButton.innerText = "+ Add to Watchlist";
+      }
+
+      watchlistButton.addEventListener("click", function () {
+        toggleWatchlist(movie);
+      });
+
+      // Add information to movie
+      movieInfo.append(
+        title,
+        releaseDate,
+        rating,
+        description,
+        watchlistButton,
+      );
 
       movieElement.append(poster, movieInfo);
 
@@ -164,6 +281,7 @@ searchForm.addEventListener("submit", function (event) {
 
   if (movieName === "") {
     genreSelect.value = "";
+
     getNowPlaying();
   } else {
     searchMovies(movieName);
@@ -174,12 +292,20 @@ searchForm.addEventListener("submit", function (event) {
 genreSelect.addEventListener("change", function () {
   const genreId = genreSelect.value;
 
-  // Clear search input when selecting a genre
+  // Clear search input
   searchInput.value = "";
 
   filterMoviesByGenre(genreId);
 });
 
+// Watchlist navigation event listener
+watchlistLink.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  showWatchlist();
+});
+
 // Load genres and movies when the page opens
 getGenres();
 getNowPlaying();
+updateWatchlistCount();
