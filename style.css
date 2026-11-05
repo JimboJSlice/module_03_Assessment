@@ -86,10 +86,14 @@ nav a:hover {
   color: #111;
   font-weight: bold;
   cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
 #searchForm button:hover {
   background: #ffc02e;
+  transform: translateY(-3px) scale(1.05);
 }
 
 /* Genre Selection */
@@ -246,7 +250,9 @@ nav a:hover {
   font-weight: 600;
 
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .watchlist-button:hover {
@@ -307,5 +313,20 @@ nav a:hover {
   .movie-description {
     font-size: 13px;
     line-height: 1.4;
+  }
+
+  .movie-row {
+    grid-template-columns: 95px 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .movie-poster {
+    max-width: 95px;
+    height: 145px;
+  }
+
+  .movie-info h2 {
+    font-size: 1rem;
   }
 }

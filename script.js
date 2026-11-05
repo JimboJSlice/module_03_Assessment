@@ -224,17 +224,17 @@ function displayMovies(movies) {
 
       // Release date
       const releaseDate = document.createElement("p");
-      releaseDate.classList.add('movie-date');
+      releaseDate.classList.add("movie-date");
       releaseDate.innerText = `Release date: ${movie.release_date || "Unknown"}`;
 
       // Movie rating
       const rating = document.createElement("p");
-      rating.classList.add('movie-rating');
+      rating.classList.add("movie-rating");
       rating.innerText = `Rating: ${Number(movie.vote_average || 0).toFixed(1)}/10`;
 
       // Movie description
       const description = document.createElement("p");
-      description.classList.add('movie-description');
+      description.classList.add("movie-description");
       description.innerText = movie.overview || "No description available.";
 
       // Watchlist button
