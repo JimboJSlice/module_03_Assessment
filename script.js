@@ -14,6 +14,9 @@ const sectionTitle = document.getElementById("sectionTitle");
 const genreSelect = document.getElementById("genreSelect");
 const watchlistLink = document.getElementById("watchlistLink");
 const watchlistCount = document.getElementById("watchlistCount");
+const movieModal = document.getElementById("movieModal");
+const modalMovieDetails = document.getElementById("modalMovieDetails");
+const closeModal = document.getElementById("closeModal");
 
 // Store movies and current page view
 let nowPlayingMovies = [];
@@ -203,6 +206,12 @@ function displayMovies(movies) {
       const movieElement = document.createElement("div");
       movieElement.classList.add("movie-row");
 
+      movieElement.style.cursor = "pointer";
+
+      movieElement.addEventListener("click", function () {
+        getMovieDetails(movie.id);
+      });
+
       // Movie poster
       const poster = document.createElement("img");
       poster.classList.add("movie-poster");
@@ -303,6 +312,97 @@ watchlistLink.addEventListener("click", function (event) {
   event.preventDefault();
 
   showWatchlist();
+});
+
+// Get more information about a movie
+function getMovieDetails(movieId) {
+  modalMovieDetails.innerHTML = "<p>Loading movie details...</p>";
+  movieModal.classList.add("active");
+
+  fetch(`${API_URL}/movie/${movieId}?language=en-IE`, OPTIONS)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Could not load movie details.");
+      }
+
+      return response.json();
+    })
+
+    .then((movie) => {
+      modalMovieDetails.innerHTML = "";
+
+      // Movie header
+      const movieHeader = document.createElement("div");
+      movieHeader.classList.add("modal-movie-header");
+
+      // Poster
+      const poster = document.createElement("img");
+      poster.classList.add("modal-movie-poster");
+
+      if (movie.poster_path) {
+        poster.src = IMAGE_URL + movie.poster_path;
+      }
+
+      poster.alt = `${movie.title} poster`;
+
+      // Movie information
+      const movieInfo = document.createElement("div");
+      movieInfo.classList.add("modal-movie-info");
+
+      const title = document.createElement("h2");
+      title.innerText = movie.title;
+
+      const releaseDate = document.createElement("p");
+      releaseDate.innerText = `Release date: ${movie.release_date || "Unknown"}`;
+
+      const rating = document.createElement("p");
+      rating.innerText = `Rating: ${Number(movie.vote_average || 0).toFixed(1)}/10`;
+
+      const runtime = document.createElement("p");
+      runtime.innerText = `Runtime: ${movie.runtime ? movie.runtime + " minutes" : "Unknown"}`;
+
+      const genres = document.createElement("p");
+      genres.innerText = `Genres: ${movie.genres.map((genre) => genre.name).join(", ") || "Unknown"}`;
+
+      const status = document.createElement("p");
+      status.innerText = `Status: ${movie.status || "Unknown"}`;
+
+      movieInfo.append(title, releaseDate, rating, runtime, genres, status);
+
+      movieHeader.append(poster, movieInfo);
+
+      // Movie overview
+      const overview = document.createElement("p");
+      overview.classList.add("modal-movie-overview");
+      overview.innerText = movie.overview || "No description available.";
+
+      modalMovieDetails.append(movieHeader, overview);
+    })
+
+    .catch((error) => {
+      console.log(error);
+      modalMovieDetails.innerText =
+        "Unable to load movie details. Please try again.";
+    });
+};
+
+// Close popup using close button
+closeModal.addEventListener("click", function () {
+  movieModal.classList.remove("active");
+});
+
+// Close popup by clicking outside the content
+movieModal.addEventListener("click", function (event) {
+  if (event.target === movieModal) {
+    movieModal.classList.remove("active");
+  }
+});
+
+// Close popup using Escape key
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    movieModal.classList.remove("active");
+  }
 });
 
 // Load genres and movies when the page opens
