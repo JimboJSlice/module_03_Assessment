@@ -194,6 +194,7 @@ function showWatchlist() {
 }
 
 // Display movies on the page
+// TO DO - Remove information as it's now in pop-up and redesign page
 function displayMovies(movies) {
   currentMovies = movies;
 
@@ -262,7 +263,9 @@ function displayMovies(movies) {
         watchlistButton.innerText = "+ Add to Watchlist";
       }
 
-      watchlistButton.addEventListener("click", function () {
+      watchlistButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+
         toggleWatchlist(movie);
       });
 
@@ -384,7 +387,7 @@ function getMovieDetails(movieId) {
       modalMovieDetails.innerText =
         "Unable to load movie details. Please try again.";
     });
-};
+}
 
 // Close popup using close button
 closeModal.addEventListener("click", function () {
