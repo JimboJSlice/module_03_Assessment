@@ -168,91 +168,61 @@ nav a:hover {
   font-size: 14px;
 }
 
-/* Movie list */
-
+/* MOVIE GRID */
 .movie-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 30px;
+    width: 100%;
+    margin: 30px auto;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-/* Individual movie rows */
-
-.movie-row {
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
-  gap: 25px;
-  width: 100%;
-  padding: 20px;
-  background: #103524;
-  border: 1px solid #303030;
-  border-radius: 8px;
-  transition: background 0.2s ease;
+/* INDIVIDUAL MOVIE CARD */
+.movie-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 12px;
+    background-color: #103524;
+    border: 1px solid #24523b;
+    border-radius: 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.movie-row:hover {
-  background: #164a30;
+.movie-card:hover {
+    background-color: #164a30;
+    transform: translateY(-5px);
 }
 
-/* Movie poster */
-
-.movie-poster {
-  width: 100%;
-  border-radius: 5px;
-  background: #303030;
+/* POSTER */
+.movie-card .movie-poster {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 6px;
 }
 
-/* Movie information */
-
-.movie-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
-  min-width: 0;
+/* TITLE */
+.movie-card h2 {
+    margin: 12px 0;
+    color: white;
+    font-size: 15px;
+    line-height: 1.4;
+    min-height: 42px;
 }
 
-.movie-info h2 {
-  font-size: 38px;
-  color: #e5a00d;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.movie-date {
-  font-size: 0.8rem;
-}
-
-.movie-rating {
-  color: #e5a00d;
-  font-weight: 700;
-}
-
-.movie-description {
-  font-size: 0.9rem;
-}
-
-/* Watchlist button */
-.watchlist-button {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 12px 20px;
-
-  background-color: #e5a00d;
-  color: #071c14;
-
-  border: none;
-  border-radius: 6px;
-
-  font-size: 0.95rem;
-  font-weight: 600;
-
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    background-color 0.2s ease;
+/* WATCHLIST BUTTON */
+.movie-card .watchlist-button {
+    width: 100%;
+    margin-top: auto;
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 5px;
 }
 
 .watchlist-button:hover {
@@ -343,16 +313,64 @@ nav a:hover {
     border-top: 1px solid #444;
 }
 
-.cinema-section h3 {
-    color: #e5a00d;
+.watch-in-section h3 {
+    color: #ff9f43;
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
-#cinemaProviders {
-    min-height: 70px;
-    padding: 15px;
-    background-color: #0b281c;
-    border-radius: 8px;
+.showtimes-notice {
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 20px;
 }
+
+.cinema-showing {
+    background-color: #172b22;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.cinema-showing h4 {
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.cinema-showing p {
+    color: #bbb;
+    margin: 8px 0;
+}
+
+.cinema-showing a {
+    color: #70d69a;
+    text-decoration: none;
+}
+
+.cinema-showing a:hover {
+    text-decoration: underline;
+}
+
+.screening-date {
+    font-weight: bold;
+    color: #fff;
+    margin-top: 18px
+}
+
+.screening-times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.screening-time {
+    background-color: #245b3e;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
 
 /* Mobile layout */
 

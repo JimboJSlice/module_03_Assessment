@@ -232,21 +232,6 @@ function displayMovies(movies) {
       const title = document.createElement("h2");
       title.innerText = movie.title;
 
-      // Release date
-      const releaseDate = document.createElement("p");
-      releaseDate.classList.add("movie-date");
-      releaseDate.innerText = `Release date: ${movie.release_date || "Unknown"}`;
-
-      // Movie rating
-      const rating = document.createElement("p");
-      rating.classList.add("movie-rating");
-      rating.innerText = `Rating: ${Number(movie.vote_average || 0).toFixed(1)}/10`;
-
-      // Movie description
-      const description = document.createElement("p");
-      description.classList.add("movie-description");
-      description.innerText = movie.overview || "No description available.";
-
       // Watchlist button
       const watchlistButton = document.createElement("button");
       watchlistButton.classList.add("watchlist-button");
@@ -272,9 +257,6 @@ function displayMovies(movies) {
       // Add information to movie
       movieInfo.append(
         title,
-        releaseDate,
-        rating,
-        description,
         watchlistButton,
       );
 
@@ -379,7 +361,10 @@ function getMovieDetails(movieId) {
       overview.classList.add("modal-movie-overview");
       overview.innerText = movie.overview || "No description available.";
 
-      modalMovieDetails.append(movieHeader, overview);
+      // Cinema overview
+      const watchInSection = displayShowtimes(movie.id);
+
+      modalMovieDetails.append(movieHeader, overview, watchInSection);
     })
 
     .catch((error) => {
