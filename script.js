@@ -205,7 +205,7 @@ function displayMovies(movies) {
   } else {
     movies.forEach((movie) => {
       const movieElement = document.createElement("div");
-      movieElement.classList.add("movie-row");
+      movieElement.classList.add("movie-card");
 
       movieElement.style.cursor = "pointer";
 
