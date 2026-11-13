@@ -194,7 +194,6 @@ function showWatchlist() {
 }
 
 // Display movies on the page
-// TO DO - Remove information as it's now in pop-up and redesign page
 function displayMovies(movies) {
   currentMovies = movies;
 

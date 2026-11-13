@@ -170,58 +170,59 @@ nav a:hover {
 
 /* MOVIE GRID */
 .movie-list {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 25px;
-    width: 100%;
-    margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 25px;
+  width: 100%;
+  margin-top: 25px;
 }
-
 
 /* INDIVIDUAL MOVIE CARD */
 .movie-card {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    padding: 10px;
-    background: #103524;
-    border: 1px solid #303030;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s ease,
-                background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 10px;
+  background: #103524;
+  border: 1px solid #303030;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .movie-card:hover {
-    background: #164a30;
-    transform: translateY(-5px);
+  background: #164a30;
+  transform: translateY(-5px);
 }
 
 /* POSTER */
 .movie-card .movie-poster {
-    width: 100%;
-    aspect-ratio: 2 / 3;
-    object-fit: cover;
-    border-radius: 5px;
-    background: #303030;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 5px;
+  background: #303030;
 }
 
 /* TITLE */
 .movie-card h2 {
-    margin: 12px 0;
-    color: #ffffff;
-    font-size: 16px;
-    line-height: 1.4;
-    min-height: 44px;
+  margin: 12px 0;
+  color: #e5a00d;
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.4;
+  min-height: 44px;
 }
 
 /* WATCHLIST BUTTON */
 .movie-card .watchlist-button {
-    width: 100%;
-    margin-top: auto;
-    padding: 8px 5px;
-    font-size: 12px;
-    border-radius: 5px;
+  width: 100%;
+  margin-top: auto;
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 5px;
 }
 
 .watchlist-button:hover {
@@ -236,142 +237,142 @@ nav a:hover {
 
 /* Movie details popup */
 .movie-modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    padding: 30px 15px;
-    background-color: rgba(0, 0, 0, 0.85);
-    overflow-y: auto;
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 30px 15px;
+  background-color: rgba(0, 0, 0, 0.85);
+  overflow-y: auto;
 }
 
 .movie-modal.active {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .movie-modal-content {
-    position: relative;
-    width: 100%;
-    max-width: 850px;
-    margin: auto;
-    padding: 30px;
-    background-color: #103524;
-    border: 1px solid #444;
-    border-radius: 12px;
-    color: white;
+  position: relative;
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
+  padding: 30px;
+  background-color: #103524;
+  border: 1px solid #444;
+  border-radius: 12px;
+  color: white;
 }
 
 .close-modal {
-    position: absolute;
-    top: 12px;
-    right: 18px;
-    border: none;
-    background: none;
-    color: white;
-    font-size: 2rem;
-    cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  border: none;
+  background: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
 }
 
 .close-modal:hover {
-    color: #ffc02e;
+  color: #ffc02e;
 }
 
 .modal-movie-header {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 25px;
-    padding-right: 20px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 25px;
+  padding-right: 20px;
 }
 
 .modal-movie-poster {
-    width: 100%;
-    border-radius: 8px;
+  width: 100%;
+  border-radius: 8px;
 }
 
 .modal-movie-info h2 {
-    margin-top: 0;
-    font-size: 1.8rem;
+  margin-top: 0;
+  font-size: 1.8rem;
 }
 
 .modal-movie-info p {
-    line-height: 1.2;
+  line-height: 1.2;
 }
 
 .modal-movie-overview {
-    margin-top: 25px;
-    line-height: 1.7;
+  margin-top: 25px;
+  line-height: 1.7;
 }
 
 .watch-in-section {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #444;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #444;
 }
 
 .watch-in-section h3 {
-    color: #ff9f43;
-    font-size: 24px;
-    margin-bottom: 10px;
+  color: #ff9f43;
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 
 .showtimes-notice {
-    color: #aaa;
-    font-size: 13px;
-    margin-bottom: 20px;
+  color: #aaa;
+  font-size: 13px;
+  margin-bottom: 20px;
 }
 
 .cinema-showing {
-    background-color: #172b22;
-    padding: 18px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+  background-color: #172b22;
+  padding: 18px;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
 .cinema-showing h4 {
-    color: #fff;
-    margin-bottom: 5px;
+  color: #fff;
+  margin-bottom: 5px;
 }
 
 .cinema-showing p {
-    color: #bbb;
-    margin: 8px 0;
+  color: #bbb;
+  margin: 8px 0;
 }
 
 .cinema-showing a {
-    color: #70d69a;
-    text-decoration: none;
+  color: #70d69a;
+  text-decoration: none;
 }
 
 .cinema-showing a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .screening-date {
-    font-weight: bold;
-    color: #fff;
-    margin-top: 18px
+  font-weight: bold;
+  color: #fff;
+  margin-top: 18px;
 }
 
 .screening-times {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .screening-time {
-    background-color: #245b3e;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 5px;
-    font-size: 14px;
+  background-color: #245b3e;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 5px;
+  font-size: 14px;
 }
 
-
 /* Mobile layout */
+/* To Do - Add grid responsivesness */
 
 @media (max-width: 600px) {
   .app {
@@ -402,14 +403,9 @@ nav a:hover {
     min-width: unset;
   }
 
-  .movie-row {
-    grid-template-columns: 105px minmax(0, 1fr);
+  .movie-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 15px;
-    padding: 12px;
-  }
-
-  .movie-info {
-    gap: 8px;
   }
 
   .movie-info h2 {
@@ -421,18 +417,27 @@ nav a:hover {
     line-height: 1.4;
   }
 
-  .movie-row {
-    grid-template-columns: 95px 1fr;
-    gap: 12px;
-    padding: 12px;
+  .movie-list .movie-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
   }
 
-  .movie-poster {
-    max-width: 95px;
-    height: 145px;
+  .movie-list .movie-card img.movie-poster {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    margin: 0 auto;
+    border-radius: 6px;
   }
 
-  .movie-info h2 {
-    font-size: 1rem;
+  .movie-list .movie-card h2 {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
   }
 }
