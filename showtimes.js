@@ -1,3 +1,5 @@
+import { cinemas } from "./cinemas.js";
+
 function getShowtimes(movieId) {
   const today = new Date();
 
@@ -36,7 +38,7 @@ function getShowtimes(movieId) {
   return screenings;
 }
 
-function displayShowtimes(movieId) {
+export function displayShowtimes(movieId) {
   const watchInSection = document.createElement("div");
 
   watchInSection.classList.add("watch-in-section");
