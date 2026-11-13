@@ -1,4 +1,10 @@
 import { displayShowtimes } from "./showtimes.js";
+import {
+  getWatchlist,
+  isMovieInWatchlist,
+  toggleWatchlist,
+  updateWatchlistCount,
+} from "./watchlist.js";
 
 const API_KEY =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MzAwMGM3MjUzYTg1Y2ZlNmRhYmJlMzVjZjUyODQ3NCIsIm5iZiI6MTc5MzI5MzA1NS45NTIsInN1YiI6IjZhZTM3YWZmMzllZDNjMWE0MjkyYWU0MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KOszt2oLlw7XqUuaSXm68o5_gJTfuRJIunsHR92Twrg";
@@ -137,51 +143,6 @@ function searchMovies(movieName) {
     });
 }
 
-// Get saved watchlist from localStorage
-function getWatchlist() {
-  return JSON.parse(localStorage.getItem("watchlist")) || [];
-}
-
-// Save watchlist to localStorage
-function saveWatchlist(watchlist) {
-  localStorage.setItem("watchlist", JSON.stringify(watchlist));
-
-  updateWatchlistCount();
-}
-
-// Update watchlist number in navigation
-function updateWatchlistCount() {
-  const watchlist = getWatchlist();
-
-  watchlistCount.innerText = watchlist.length;
-}
-
-// Add or remove a movie from the watchlist
-function toggleWatchlist(movie) {
-  let watchlist = getWatchlist();
-
-  const movieExists = watchlist.some(
-    (savedMovie) => savedMovie.id === movie.id,
-  );
-
-  if (movieExists) {
-    watchlist = watchlist.filter((savedMovie) => savedMovie.id !== movie.id);
-  } else {
-    watchlist.push(movie);
-  }
-
-  saveWatchlist(watchlist);
-
-  // Refresh the current movie list or watchlist
-  if (currentView === "watchlist") {
-    displayMovies(getWatchlist());
-
-    statusText.innerText = `${getWatchlist().length} saved movies`;
-  } else {
-    displayMovies(currentMovies);
-  }
-}
-
 // Open watchlist
 function showWatchlist() {
   currentView = "watchlist";
@@ -237,11 +198,7 @@ function displayMovies(movies) {
       const watchlistButton = document.createElement("button");
       watchlistButton.classList.add("watchlist-button");
 
-      const watchlist = getWatchlist();
-
-      const movieSaved = watchlist.some(
-        (savedMovie) => savedMovie.id === movie.id,
-      );
+      const movieSaved = isMovieInWatchlist(movie.id);
 
       if (movieSaved) {
         watchlistButton.innerText = "Remove from Watchlist";
@@ -253,13 +210,21 @@ function displayMovies(movies) {
         event.stopPropagation();
 
         toggleWatchlist(movie);
+
+        if (isMovieInWatchlist(movie.id)) {
+          watchlistButton.innerText = "Remove from Watchlist";
+        } else {
+          watchlistButton.innerText = "+ Add to Watchlist";
+        }
+
+        // Refresh the page if viewing the watchlist
+        if (currentView === "watchlist") {
+          displayMovies(getWatchlist());
+        }
       });
 
       // Add information to movie
-      movieInfo.append(
-        title,
-        watchlistButton,
-      );
+      movieInfo.append(title, watchlistButton);
 
       movieElement.append(poster, movieInfo);
 

@@ -372,7 +372,6 @@ nav a:hover {
 }
 
 /* Mobile layout */
-/* To Do - Add grid responsivesness */
 
 @media (max-width: 600px) {
   .app {
