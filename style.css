@@ -50,10 +50,13 @@ nav a:hover {
 }
 
 .hero h1 {
-  font-size: 42px;
+  font-size: 48px;
   color: #f2efc7;
-  margin-bottom: 30px;
+  margin: auto;
+  width: 80%;
+  padding-bottom: 30px;
 }
+
 
 #searchForm {
   display: flex;
@@ -395,6 +398,10 @@ nav a:hover {
 
   .hero {
     padding: 40px 0 30px;
+  }
+
+  .hero h1 {
+    font-size: 40px;
   }
 
   #searchForm button {

@@ -21,79 +21,13 @@ const statusText = document.getElementById("statusText");
 const sectionTitle = document.getElementById("sectionTitle");
 const genreSelect = document.getElementById("genreSelect");
 const watchlistLink = document.getElementById("watchlistLink");
-const watchlistCount = document.getElementById("watchlistCount");
 const movieModal = document.getElementById("movieModal");
 const modalMovieDetails = document.getElementById("modalMovieDetails");
 const closeModal = document.getElementById("closeModal");
 
 // Store movies and current page view
 let nowPlayingMovies = [];
-let currentMovies = [];
 let currentView = "movies";
-
-// Get movies currently playing in Ireland
-function getNowPlaying() {
-  currentView = "movies";
-
-  statusText.innerText = "Loading movies...";
-  sectionTitle.innerText = "Now Playing in Ireland";
-
-  fetch(`${API_URL}/movie/now_playing?region=IE&language=en-IE`, OPTIONS)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Could not load movies.");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      nowPlayingMovies = data.results;
-      displayMovies(nowPlayingMovies);
-      statusText.innerText = `${data.total_results} movies found`;
-    })
-    .catch((error) => {
-      console.log(error);
-      statusText.innerText = "Something went wrong. Please try again.";
-    });
-}
-
-// Get movie genres from TMDB
-function getGenres() {
-  fetch(`${API_URL}/genre/movie/list?language=en-IE`, OPTIONS)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Could not load genres.");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      data.genres.forEach((genre) => {
-        const option = document.createElement("option");
-        option.value = genre.id;
-        option.innerText = genre.name;
-        genreSelect.append(option);
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-// Filter Now Playing movies by genre
-function filterMoviesByGenre(genreId) {
-  currentView = "movies";
-  if (genreId === "") {
-    displayMovies(nowPlayingMovies);
-    sectionTitle.innerText = "Now Playing in Ireland";
-    statusText.innerText = `${nowPlayingMovies.length} movies found`;
-  } else {
-    const filteredMovies = nowPlayingMovies.filter((movie) =>
-      movie.genre_ids.includes(Number(genreId)),
-    );
-    displayMovies(filteredMovies);
-    sectionTitle.innerText = "Now Playing in Ireland";
-    statusText.innerText = `${filteredMovies.length} movies found`;
-  }
-}
 
 // Search for movies
 function searchMovies(movieName) {
@@ -122,18 +56,97 @@ function searchMovies(movieName) {
     });
 }
 
-// Open watchlist
-function showWatchlist() {
-  currentView = "watchlist";
-  sectionTitle.innerText = "My Watchlist";
-  const watchlist = getWatchlist();
-  displayMovies(watchlist);
-  statusText.innerText = `${watchlist.length} saved movies`;
+// Search form event listener
+searchForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  const movieName = searchInput.value.trim();
+  if (movieName === "") {
+    genreSelect.value = "";
+    getNowPlaying();
+  } else {
+    searchMovies(movieName);
+  }
+});
+
+// Get movie genres from TMDB
+function getGenres() {
+  fetch(`${API_URL}/genre/movie/list?language=en-IE`, OPTIONS)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Could not load genres.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      data.genres.forEach((genre) => {
+        const option = document.createElement("option");
+        option.value = genre.id;
+        option.innerText = genre.name;
+        genreSelect.append(option);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+// Genre selection event listener
+genreSelect.addEventListener("change", function () {
+  const genreId = genreSelect.value;
+  // Clear search input
+  searchInput.value = "";
+  filterMoviesByGenre(genreId);
+});
+// Watchlist navigation event listener
+watchlistLink.addEventListener("click", function (event) {
+  event.preventDefault();
+  showWatchlist();
+});
+
+// Filter Now Playing movies by genre
+function filterMoviesByGenre(genreId) {
+  currentView = "movies";
+  if (genreId === "") {
+    displayMovies(nowPlayingMovies);
+    sectionTitle.innerText = "Now Playing in Ireland";
+    statusText.innerText = `${nowPlayingMovies.length} movies found`;
+  } else {
+    const filteredMovies = nowPlayingMovies.filter((movie) =>
+      movie.genre_ids.includes(Number(genreId)),
+    );
+    displayMovies(filteredMovies);
+    sectionTitle.innerText = "Now Playing in Ireland";
+    statusText.innerText = `${filteredMovies.length} movies found`;
+  }
+}
+
+// Get movies currently playing in Ireland
+function getNowPlaying() {
+  currentView = "movies";
+
+  statusText.innerText = "Loading movies...";
+  sectionTitle.innerText = "Now Playing in Ireland";
+
+  fetch(`${API_URL}/movie/now_playing?region=IE&language=en-IE`, OPTIONS)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Could not load movies.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      nowPlayingMovies = data.results;
+      displayMovies(nowPlayingMovies);
+      statusText.innerText = `${data.total_results} movies found`;
+    })
+    .catch((error) => {
+      console.log(error);
+      statusText.innerText = "Something went wrong. Please try again.";
+    });
 }
 
 // Display movies on the page
 function displayMovies(movies) {
-  currentMovies = movies;
   result.innerHTML = "";
   if (!movies || movies.length === 0) {
     result.innerHTML = "<p>No movies found.</p>";
@@ -193,32 +206,7 @@ function displayMovies(movies) {
   }
 }
 
-// Search form event listener
-searchForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-  const movieName = searchInput.value.trim();
-  if (movieName === "") {
-    genreSelect.value = "";
-    getNowPlaying();
-  } else {
-    searchMovies(movieName);
-  }
-});
-
-// Genre selection event listener
-genreSelect.addEventListener("change", function () {
-  const genreId = genreSelect.value;
-  // Clear search input
-  searchInput.value = "";
-  filterMoviesByGenre(genreId);
-});
-// Watchlist navigation event listener
-watchlistLink.addEventListener("click", function (event) {
-  event.preventDefault();
-  showWatchlist();
-});
-
-// Get more information about a movie
+// Open modal with movie details
 function getMovieDetails(movieId) {
   modalMovieDetails.innerHTML = "<p>Loading movie details...</p>";
   movieModal.classList.add("active");
@@ -291,6 +279,15 @@ document.addEventListener("keydown", function (event) {
     movieModal.classList.remove("active");
   }
 });
+
+// Open watchlist
+function showWatchlist() {
+  currentView = "watchlist";
+  sectionTitle.innerText = "My Watchlist";
+  const watchlist = getWatchlist();
+  displayMovies(watchlist);
+  statusText.innerText = `${watchlist.length} saved movies`;
+}
 
 // Load genres and movies when the page opens
 getGenres();
