@@ -1,5 +1,3 @@
-/* General styles */
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -13,11 +11,13 @@ body {
 }
 
 /* Navigation */
-
 nav {
   padding: 20px 5%;
   background: #0b281c;
   border-bottom: 1px solid #303030;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 nav ul {
@@ -37,7 +37,6 @@ nav a:hover {
 }
 
 /* Main application */
-
 .app {
   width: 90%;
   max-width: 1200px;
@@ -45,7 +44,6 @@ nav a:hover {
 }
 
 /* Hero / Search */
-
 .hero {
   padding: 60px 0 40px;
   text-align: center;
@@ -53,6 +51,7 @@ nav a:hover {
 
 .hero h1 {
   font-size: 42px;
+  color: #f2efc7;
   margin-bottom: 30px;
 }
 
@@ -75,7 +74,7 @@ nav a:hover {
 }
 
 #searchInput:focus {
-  outline: 2px solid #ffc02e;
+  outline: 2px solid #ff883e;
 }
 
 #searchForm button {
@@ -92,12 +91,11 @@ nav a:hover {
 }
 
 #searchForm button:hover {
-  background: #ffc02e;
+  background: #ff883e;
   transform: translateY(-3px) scale(1.05);
 }
 
 /* Genre Selection */
-
 .genre-selection {
   display: flex;
   align-items: center;
@@ -111,7 +109,7 @@ nav a:hover {
 
 /* Genre label */
 .genre-selection label {
-  color: white;
+  color: #f2efc7;
   font-size: 1.2rem;
   font-weight: 600;
 }
@@ -119,7 +117,6 @@ nav a:hover {
 /* Genre dropdown */
 .genre-selection select {
   min-width: 250px;
-  padding: 14px 45px 14px 18px;
   background-color: #222;
   color: #999;
   border: 2px solid #444;
@@ -132,14 +129,14 @@ nav a:hover {
 
 /* Hover effect */
 .genre-selection select:hover {
-  border-color: #444;
-  background-color: #ffc02e;
+  color: #071c14;
+  background-color: #ff883e;
 }
 
 /* Focus effect */
 .genre-selection select:focus {
   outline: none;
-  border-color: #ffc02e;
+  border-color: #ff883e;
   box-shadow: 0 0 0 3px rgba(32, 200, 120, 0.2);
 }
 
@@ -148,18 +145,15 @@ nav a:hover {
   background-color: #103524;
   color: white;
 }
+
 /* Movie section */
-
-.movies-section {
-  padding: 20px 0 60px;
-}
-
 .section-header {
+  color: #f2efc7;
   margin-bottom: 25px;
 }
 
 .section-header h2 {
-  font-size: 25px;
+  font-size: 35px;
   margin-bottom: 10px;
 }
 
@@ -168,7 +162,7 @@ nav a:hover {
   font-size: 14px;
 }
 
-/* MOVIE GRID */
+/* Movie grid */
 .movie-list {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -177,7 +171,7 @@ nav a:hover {
   margin-top: 25px;
 }
 
-/* INDIVIDUAL MOVIE CARD */
+/* Individual movie cards */
 .movie-card {
   display: flex;
   flex-direction: column;
@@ -193,11 +187,11 @@ nav a:hover {
 }
 
 .movie-card:hover {
-  background: #164a30;
+  background: #169b62;
   transform: translateY(-5px);
 }
 
-/* POSTER */
+/* Grid Poster images */
 .movie-card .movie-poster {
   width: 100%;
   aspect-ratio: 2 / 3;
@@ -206,7 +200,7 @@ nav a:hover {
   background: #303030;
 }
 
-/* TITLE */
+/* Grid Titles */
 .movie-card h2 {
   margin: 12px 0;
   color: #e5a00d;
@@ -216,8 +210,9 @@ nav a:hover {
   min-height: 44px;
 }
 
-/* WATCHLIST BUTTON */
+/* Watchlist button */
 .movie-card .watchlist-button {
+  background-color: #f2efc7;
   width: 100%;
   margin-top: auto;
   padding: 8px 5px;
@@ -226,12 +221,26 @@ nav a:hover {
 }
 
 .watchlist-button:hover {
-  background-color: #ffc02e;
+  background-color: #ff883e;
   transform: translateY(-3px) scale(1.05);
 }
 
+/* Movie already added to watchlist */
+.watchlist-button.added {
+  background-color: #169B62;
+  color: #111;
+  font-weight: bold;
+}
+
+/* Hover effect for saved movies */
+.watchlist-button.added:hover {
+  background-color: #ff6b35;
+  border-color: #ff6b35;
+  color: white;
+}
+
 #watchlistCount {
-  color: #ffc02e;
+  color: #ff883e;
   font-weight: bold;
 }
 
@@ -278,7 +287,7 @@ nav a:hover {
 }
 
 .close-modal:hover {
-  color: #ffc02e;
+  color: #ff883e;
 }
 
 .modal-movie-header {
@@ -294,8 +303,10 @@ nav a:hover {
 }
 
 .modal-movie-info h2 {
+  color: #e5a00d;
   margin-top: 0;
-  font-size: 1.8rem;
+  padding-bottom: 20px;
+  font-size: 40px;
 }
 
 .modal-movie-info p {
@@ -343,7 +354,7 @@ nav a:hover {
 }
 
 .cinema-showing a {
-  color: #70d69a;
+  color: #169b62;
   text-decoration: none;
 }
 

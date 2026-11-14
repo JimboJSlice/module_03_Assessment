@@ -43,18 +43,13 @@ function getNowPlaying() {
       if (!response.ok) {
         throw new Error("Could not load movies.");
       }
-
       return response.json();
     })
-
     .then((data) => {
       nowPlayingMovies = data.results;
-
       displayMovies(nowPlayingMovies);
-
       statusText.innerText = `${data.total_results} movies found`;
     })
-
     .catch((error) => {
       console.log(error);
       statusText.innerText = "Something went wrong. Please try again.";
@@ -68,21 +63,16 @@ function getGenres() {
       if (!response.ok) {
         throw new Error("Could not load genres.");
       }
-
       return response.json();
     })
-
     .then((data) => {
       data.genres.forEach((genre) => {
         const option = document.createElement("option");
-
         option.value = genre.id;
         option.innerText = genre.name;
-
         genreSelect.append(option);
       });
     })
-
     .catch((error) => {
       console.log(error);
     });
@@ -91,19 +81,15 @@ function getGenres() {
 // Filter Now Playing movies by genre
 function filterMoviesByGenre(genreId) {
   currentView = "movies";
-
   if (genreId === "") {
     displayMovies(nowPlayingMovies);
-
     sectionTitle.innerText = "Now Playing in Ireland";
     statusText.innerText = `${nowPlayingMovies.length} movies found`;
   } else {
     const filteredMovies = nowPlayingMovies.filter((movie) =>
       movie.genre_ids.includes(Number(genreId)),
     );
-
     displayMovies(filteredMovies);
-
     sectionTitle.innerText = "Now Playing in Ireland";
     statusText.innerText = `${filteredMovies.length} movies found`;
   }
@@ -112,13 +98,10 @@ function filterMoviesByGenre(genreId) {
 // Search for movies
 function searchMovies(movieName) {
   currentView = "movies";
-
   // Reset genre selection
   genreSelect.value = "";
-
   statusText.innerText = "Searching...";
   sectionTitle.innerText = `Search results for "${movieName}"`;
-
   fetch(
     `${API_URL}/search/movie?query=${encodeURIComponent(movieName)}&region=IE&language=en-IE`,
     OPTIONS,
@@ -127,16 +110,12 @@ function searchMovies(movieName) {
       if (!response.ok) {
         throw new Error("Could not search for movies.");
       }
-
       return response.json();
     })
-
     .then((data) => {
       displayMovies(data.results);
-
       statusText.innerText = `${data.total_results} movies found`;
     })
-
     .catch((error) => {
       console.log(error);
       statusText.innerText = "Something went wrong. Please try again.";
@@ -146,88 +125,69 @@ function searchMovies(movieName) {
 // Open watchlist
 function showWatchlist() {
   currentView = "watchlist";
-
   sectionTitle.innerText = "My Watchlist";
-
   const watchlist = getWatchlist();
-
   displayMovies(watchlist);
-
   statusText.innerText = `${watchlist.length} saved movies`;
 }
 
 // Display movies on the page
 function displayMovies(movies) {
   currentMovies = movies;
-
   result.innerHTML = "";
-
   if (!movies || movies.length === 0) {
     result.innerHTML = "<p>No movies found.</p>";
   } else {
     movies.forEach((movie) => {
       const movieElement = document.createElement("div");
       movieElement.classList.add("movie-card");
-
       movieElement.style.cursor = "pointer";
-
       movieElement.addEventListener("click", function () {
         getMovieDetails(movie.id);
       });
-
       // Movie poster
       const poster = document.createElement("img");
       poster.classList.add("movie-poster");
-
       if (movie.poster_path) {
         poster.src = IMAGE_URL + movie.poster_path;
       }
-
       poster.alt = `${movie.title} poster`;
       poster.loading = "lazy";
-
       // Movie information
       const movieInfo = document.createElement("div");
       movieInfo.classList.add("movie-info");
-
       // Movie title
       const title = document.createElement("h2");
       title.innerText = movie.title;
-
       // Watchlist button
       const watchlistButton = document.createElement("button");
       watchlistButton.classList.add("watchlist-button");
-
       const movieSaved = isMovieInWatchlist(movie.id);
-
       if (movieSaved) {
         watchlistButton.innerText = "Remove from Watchlist";
+        watchlistButton.classList.add("added");
       } else {
         watchlistButton.innerText = "+ Add to Watchlist";
+        watchlistButton.classList.remove("added");
       }
-
+      // When button is clicked
       watchlistButton.addEventListener("click", function (event) {
         event.stopPropagation();
-
         toggleWatchlist(movie);
-
         if (isMovieInWatchlist(movie.id)) {
-          watchlistButton.innerText = "Remove from Watchlist";
+          watchlistButton.innerText = "Added to Watchlist";
+          watchlistButton.classList.add("added");
         } else {
           watchlistButton.innerText = "+ Add to Watchlist";
+          watchlistButton.classList.remove("added");
         }
-
-        // Refresh the page if viewing the watchlist
         if (currentView === "watchlist") {
           displayMovies(getWatchlist());
         }
       });
-
       // Add information to movie
       movieInfo.append(title, watchlistButton);
-
       movieElement.append(poster, movieInfo);
-
       result.append(movieElement);
     });
   }
@@ -236,12 +196,9 @@ function displayMovies(movies) {
 // Search form event listener
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
-
   const movieName = searchInput.value.trim();
-
   if (movieName === "") {
     genreSelect.value = "";
-
     getNowPlaying();
   } else {
     searchMovies(movieName);
@@ -251,17 +208,13 @@ searchForm.addEventListener("submit", function (event) {
 // Genre selection event listener
 genreSelect.addEventListener("change", function () {
   const genreId = genreSelect.value;
-
   // Clear search input
   searchInput.value = "";
-
   filterMoviesByGenre(genreId);
 });
-
 // Watchlist navigation event listener
 watchlistLink.addEventListener("click", function (event) {
   event.preventDefault();
-
   showWatchlist();
 });
 
@@ -269,70 +222,50 @@ watchlistLink.addEventListener("click", function (event) {
 function getMovieDetails(movieId) {
   modalMovieDetails.innerHTML = "<p>Loading movie details...</p>";
   movieModal.classList.add("active");
-
   fetch(`${API_URL}/movie/${movieId}?language=en-IE`, OPTIONS)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Could not load movie details.");
       }
-
       return response.json();
     })
-
     .then((movie) => {
       modalMovieDetails.innerHTML = "";
-
       // Movie header
       const movieHeader = document.createElement("div");
       movieHeader.classList.add("modal-movie-header");
-
       // Poster
       const poster = document.createElement("img");
       poster.classList.add("modal-movie-poster");
-
       if (movie.poster_path) {
         poster.src = IMAGE_URL + movie.poster_path;
       }
-
       poster.alt = `${movie.title} poster`;
-
       // Movie information
       const movieInfo = document.createElement("div");
       movieInfo.classList.add("modal-movie-info");
-
       const title = document.createElement("h2");
       title.innerText = movie.title;
-
       const releaseDate = document.createElement("p");
       releaseDate.innerText = `Release date: ${movie.release_date || "Unknown"}`;
-
       const rating = document.createElement("p");
       rating.innerText = `Rating: ${Number(movie.vote_average || 0).toFixed(1)}/10`;
-
       const runtime = document.createElement("p");
       runtime.innerText = `Runtime: ${movie.runtime ? movie.runtime + " minutes" : "Unknown"}`;
-
       const genres = document.createElement("p");
       genres.innerText = `Genres: ${movie.genres.map((genre) => genre.name).join(", ") || "Unknown"}`;
-
       const status = document.createElement("p");
       status.innerText = `Status: ${movie.status || "Unknown"}`;
-
       movieInfo.append(title, releaseDate, rating, runtime, genres, status);
-
       movieHeader.append(poster, movieInfo);
-
       // Movie overview
       const overview = document.createElement("p");
       overview.classList.add("modal-movie-overview");
       overview.innerText = movie.overview || "No description available.";
-
       // Cinema overview
       const watchInSection = displayShowtimes(movie.id);
-
       modalMovieDetails.append(movieHeader, overview, watchInSection);
     })
-
     .catch((error) => {
       console.log(error);
       modalMovieDetails.innerText =
